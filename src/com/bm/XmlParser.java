@@ -1,12 +1,5 @@
 package com.bm;
 
-/**
- * 
- * @author: kim hamberg
- * @date: 2015-03-29
- * 
- */
-
 // TODO if duplicates found? grab first?
 import java.util.ArrayList;
 
@@ -88,19 +81,9 @@ public class XmlParser {
 			findAllNodes(parent, elemName, foundNodes);
 
 			for (Node fn : foundNodes) {
-//				String fullXPath = fn.getFullXpath() + "/" + xPath.replaceFirst(xmlTags[0], "");
-//				fullXPath = fullXPath.replaceAll("//", "/");
-//				System.out.println("full xpath is: "+ fn.getFullXpath());
-//				System.out.println("xpath is: "+ xPath);
 				if(fn.getFullXpath().endsWith(xPath)){
-//					System.out.println("returning xpath is: "+ fn.getFullXpath());
 					return fn;
 				}
-//				System.out.println("/"+ xPath);
-//				Node foundNode = getNodeViaFullXpath(parent, "/"+ parent.getName() +"/"+ xPath);
-//				if (foundNode != null) {
-//					return foundNode;
-//				}
 			}
 		} else {
 			// TODO report error
@@ -144,10 +127,6 @@ public class XmlParser {
 				return fn;
 			}
 			position++;
-//			Node foundNode = getNodeViaFullXpath(nodes, fn.getFullXpath());
-//			if (foundNode != null) {
-//				return foundNode;
-//			}
 		}
 		return null;
 	}
@@ -167,15 +146,9 @@ public class XmlParser {
 			ArrayList<Node> foundNodes = new ArrayList<Node>();
 			foundMatchingNodes = new ArrayList<Node>();
 			findAllNodes(nodes, elemName, foundNodes);
-//			System.out.println("found size: "+ foundNodes.size());
 			int position = 1;
 			for (Node fn : foundNodes) {
 				String fullXPath = fn.getFullXpath();
-//				System.out.println("full: "+ fullXPath);
-//				System.out.println("xpath: "+ xPath);
-//				System.out.println("node: "+ fn);
-//				System.out.println("position is: "+ position);
-//				System.out.println("offset is: "+ offset);
 				if (fullXPath.endsWith(xPath) ) {
 					if(position == offset && result == null){ // keep first found
 						result = fn;
@@ -238,9 +211,6 @@ public class XmlParser {
 		}
 		return found;
 	}
-	// String regex ="(resource-id=\".*:id/section_navigation_title_tv\")";
-	// matches below
-	// resource-id="com.viaplay.android.tvebeta:id/section_navigation_title_tv"
 
 	/**
 	 * search for node with name from given node and then depth breadth first and store found nodes in provided ArrayList
@@ -279,13 +249,6 @@ public class XmlParser {
 					found = getNodeViaFullXpath(n, foundPath);
 					break;
 				}
-				// to costly, might be a better way
-				// else{
-				// foundPath = foundPath.replaceAll("[1]", "");
-				// if(foundPath.equals(xPath)){
-				// found = getNodeViaFullXpath(n, xPath);
-				// }
-				// }
 			}
 		}
 		return found;
@@ -306,7 +269,6 @@ public class XmlParser {
 	}
 
 	private void parseNode(String s, Node n) {
-		// remove <?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 		if (s.indexOf("<?xml") == 0) {
 			s = s.substring(s.indexOf(">") + 1);
 		}
@@ -363,43 +325,6 @@ public class XmlParser {
 		return nodes;
 	}
 	
-	// private void parse(String s) {
-	// for (int x = 0; x < s.length(); x++) {
-	// char c = s.charAt(x);
-	// if (c == '<') {
-	// char c1 = s.charAt(x + 1);
-	// if (c1 == '/') {
-	// this.log("found end tag at: " + x);
-	// endPos.add(x);
-	// this.log(s.substring(x, s.indexOf('>', x) + 1));
-	// } else {
-	// this.log("found start tag at: " + x);
-	// startPos.add(x);
-	// this.log(s.substring(x, s.indexOf('>', x) + 1));
-	// }
-	// }
-	// }
-	// }
-	//
-	// private String getPaths(String s) {
-	// String result = "";
-	// if (s.length() == 0) {
-	// return "";
-	// }
-	// char c = s.charAt(0);
-	// if (c == '<') {
-	// result = s.substring(0, s.indexOf('>', 0) + 1);
-	// char c1 = s.charAt(1);
-	// if (c1 == '/') {
-	// // result += "/"+ getPaths(s.replaceFirst(result, ""));
-	// return s.substring(0, s.indexOf('>') + 1);
-	// } else {
-	// result += "/" + getPaths(s.replaceFirst(result, ""));
-	// }
-	// }
-	// return result;
-	// }
-
 	public int getOffset() {
 		return offset;
 	}
@@ -413,13 +338,9 @@ public class XmlParser {
 	}
 
 	private void log(String m) {
-		System.out.println(m);
+		LOG.info(m);
 	}
 
-	/**
-	 * @author kim hamberg
-	 * @class Node A class to build a node tree. A node is parsed from the xml tag, e.g. <tag attribute=""></tag> Can have 1 parent and 0 or more children
-	 */
 	public class Node {
 		private String name;
 		private String attributes;
@@ -676,23 +597,15 @@ public class XmlParser {
 		@Override
 		public int hashCode() {
 			int hash = 40;
-			hash = hash * 11 + startPos;
-			hash = hash * 17 + endPos;
-			hash = hash * 31 + name.hashCode();
-			hash = hash * 13 + attributes.hashCode();
-
-			// HashCodeBuilder hb = new HashCodeBuilder(11, 40) // two randomly chosen prime numbers
-			// .append(startPos)
-			// .append(endPos)
-			// .append(name)
-			// .append(attributes);
 
 			if (identifier != null) {
 				hash = 11 + identifier.hashCode();
-				// hb = new HashCodeBuilder(11, 40) // two randomly chosen prime numbers
-				// .append(identifier);
+			}else{
+				hash = hash * 11 + startPos;
+				hash = hash * 17 + endPos;
+				hash = hash * 31 + name.hashCode();
+				hash = hash * 13 + attributes.hashCode();
 			}
-			// return hb.toHashCode();
 			return hash;
 		}
 
@@ -712,38 +625,30 @@ public class XmlParser {
 			}
 
 			int hash = 40;
-			hash = hash * 11 + startPos;
-			hash = hash * 17 + endPos;
-			hash = hash * 31 + name.hashCode();
-			if (attributes != null) {
-				hash = hash * 13 + attributes.hashCode();
-			}
-
-			int hashCompare = 40;
-			hashCompare = hashCompare * 11 + n.startPos;
-			hashCompare = hashCompare * 17 + n.endPos;
-			hashCompare = hashCompare * 31 + n.name.hashCode();
-			if (n.attributes != null) {
-				hashCompare = hashCompare * 13 + n.attributes.hashCode();
-			}
-			// EqualsBuilder eb = new EqualsBuilder()
-			// .append(startPos, n.startPos)
-			// .append(endPos, n.startPos)
-			// .append(name, n.name)
-			// .append(attributes, n.attributes);
 
 			if (identifier != null) {
-				// eb = new EqualsBuilder()
-				// .append(identifier, n.identifier);
 				hash = 11 + identifier.hashCode();
+			}else{
+				hash = hash * 11 + startPos;
+				hash = hash * 17 + endPos;
+				hash = hash * 31 + name.hashCode();
+				if (attributes != null) {
+					hash = hash * 13 + attributes.hashCode();
+				}
 			}
-			if (n.identifier != null) {
-				// eb = new EqualsBuilder()
-				// .append(identifier, n.identifier);
-				hashCompare = 11 + n.identifier.hashCode();
-			}
+			
+			int hashCompare = 40;
 
-			// return eb.isEquals();
+			if (n.identifier != null) {
+				hashCompare = 11 + n.identifier.hashCode();
+			}else{
+				hashCompare = hashCompare * 11 + n.startPos;
+				hashCompare = hashCompare * 17 + n.endPos;
+				hashCompare = hashCompare * 31 + n.name.hashCode();
+				if (n.attributes != null) {
+					hashCompare = hashCompare * 13 + n.attributes.hashCode();
+				}
+			}
 			return hash == hashCompare;
 		}
 
