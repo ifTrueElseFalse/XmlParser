@@ -338,7 +338,7 @@ public class XmlParser {
 	}
 
 	private void log(String m) {
-		LOG.info(m);
+		System.out.println(m);
 	}
 
 	public class Node {
