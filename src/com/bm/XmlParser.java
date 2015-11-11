@@ -1,4 +1,10 @@
 package com.bm;
+/**
+ * 
+ * @author: kim hamberg
+ * @date: 2015-03-29
+ * 
+ */
 
 // TODO if duplicates found? grab first?
 import java.util.ArrayList;
@@ -147,14 +153,29 @@ public class XmlParser {
 			foundMatchingNodes = new ArrayList<Node>();
 			findAllNodes(nodes, elemName, foundNodes);
 			int position = 1;
-			for (Node fn : foundNodes) {
-				String fullXPath = fn.getFullXpath();
-				if (fullXPath.endsWith(xPath) ) {
-					if(position == offset && result == null){ // keep first found
-						result = fn;
+			
+			if(xPath.contains("[1]")){
+				String flooredXPath = xPath.replaceAll("\\[1\\]", "");
+				for (Node fn : foundNodes) {
+					String fullXPath = fn.getFullXpath();
+					if (fullXPath.endsWith(xPath) || fullXPath.endsWith(flooredXPath)) {
+						if(position == offset && result == null){ // keep first found
+							result = fn;
+						}
+						foundMatchingNodes.add(fn);
+						position++;
 					}
-					foundMatchingNodes.add(fn);
-					position++;
+				}
+			}else{
+				for (Node fn : foundNodes) {
+					String fullXPath = fn.getFullXpath();
+					if (fullXPath.endsWith(xPath) ) {
+						if(position == offset && result == null){ // keep first found
+							result = fn;
+						}
+						foundMatchingNodes.add(fn);
+						position++;
+					}
 				}
 			}
 		} else {
@@ -324,7 +345,7 @@ public class XmlParser {
 	public XmlParser.Node getNodes() {
 		return nodes;
 	}
-	
+
 	public int getOffset() {
 		return offset;
 	}
@@ -341,6 +362,9 @@ public class XmlParser {
 		System.out.println(m);
 	}
 
+	/**
+	 * @class Node A class to build a node tree. A node is parsed from the xml tag, e.g. <tag attribute=""></tag> Can have 1 parent and 0 or more children
+	 */
 	public class Node {
 		private String name;
 		private String attributes;
@@ -525,6 +549,25 @@ public class XmlParser {
 			boolean result = false;
 			if (!children.contains(newChild)) {
 				addChild(newChild);
+				result = true;
+			}
+			return result;
+		}
+		
+		public boolean updateChild(Node oldChild, Node newChild) {
+			boolean result = false;
+			int index = children.indexOf(oldChild);
+			if(index >= 0){
+				children.set(index, newChild);
+				result = true;
+			}
+			return result;
+		}
+		
+		public boolean updateChild(int index, Node newChild) {
+			boolean result = false;
+			if(index >= 0 && index < children.size()){
+				children.set(index, newChild);
 				result = true;
 			}
 			return result;

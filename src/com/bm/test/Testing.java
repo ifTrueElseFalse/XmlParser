@@ -49,6 +49,13 @@ public class Testing {
 								+ "</row>"
 							+ "</list>"
 						+ "</div>"
+						+"<div>"
+							+"<android.widget.LinearLayout>"
+								+ "<android.support.v7.app.ActionBar$Tab>"
+									+ "<android.widget.TextView test=\"something\"></android.widget.TextView>"
+								+ "</android.support.v7.app.ActionBar$Tab>"
+							+ "</android.widget.LinearLayout>"
+						+"</div>"
 					+ "</root>";
 		
 		testXp.parseNode(xml);
