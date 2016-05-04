@@ -1,14 +1,14 @@
+/**
+ * @author kim hamberg
+ */
+
 package com.bm.test;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import com.bm.XmlParser;
 
 public class Testing {
-	/**
-	 * @param args
-	 * @throws JSONException 
-	 */
+	
+
 	public static void main(String args[]){
 		// add find index and replace end from end not offset
 		// TODO add test for get all nodes with xpath and attrib
@@ -50,11 +50,6 @@ public class Testing {
 							+ "</list>"
 						+ "</div>"
 						+"<div>"
-							+"<android.widget.LinearLayout>"
-								+ "<android.support.v7.app.ActionBar$Tab>"
-									+ "<android.widget.TextView test=\"something\"></android.widget.TextView>"
-								+ "</android.support.v7.app.ActionBar$Tab>"
-							+ "</android.widget.LinearLayout>"
 						+"</div>"
 					+ "</root>";
 		
@@ -210,7 +205,5 @@ public class Testing {
 //		node to child
 //		add unique, not added and added
 		
-		
-		System.exit(0);
 	}
 }

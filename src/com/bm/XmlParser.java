@@ -1,9 +1,7 @@
 package com.bm;
 /**
- * 
  * @author: kim hamberg
  * @date: 2015-03-29
- * 
  */
 
 // TODO if duplicates found? grab first?
@@ -28,8 +26,8 @@ public class XmlParser {
 	 */
 	public void parseNode(String xml) {
 		if(!locked){
-			// remove <?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 			if (xml.indexOf("<?xml") == 0) {
+				// TODO add it to the tree instead of cutting it out, like a sibling to top
 				xml = xml.substring(xml.indexOf(">") + 1);
 			}
 	
@@ -85,10 +83,21 @@ public class XmlParser {
 			ArrayList<Node> foundNodes = new ArrayList<Node>();
 
 			findAllNodes(parent, elemName, foundNodes);
-
-			for (Node fn : foundNodes) {
-				if(fn.getFullXpath().endsWith(xPath)){
-					return fn;
+			if(xPath.contains("[1]")){ // TODO make this better
+				String flooredXPath = xPath.replaceAll("\\[1\\]", "");
+				for (Node fn : foundNodes) {
+					String fullXPath = fn.getFullXpath();
+					String flooredFullXPath =  fullXPath.replaceAll("\\[1\\]", "");
+					
+					if (fullXPath.endsWith(xPath) || flooredFullXPath.endsWith(flooredXPath)) {
+						return fn;
+					}
+				}
+			}else{
+				for (Node fn : foundNodes) {
+					if(fn.getFullXpath().endsWith(xPath)){
+						return fn;
+					}
 				}
 			}
 		} else {
@@ -158,7 +167,8 @@ public class XmlParser {
 				String flooredXPath = xPath.replaceAll("\\[1\\]", "");
 				for (Node fn : foundNodes) {
 					String fullXPath = fn.getFullXpath();
-					if (fullXPath.endsWith(xPath) || fullXPath.endsWith(flooredXPath)) {
+					String flooredFullXPath = fullXPath.replaceAll("\\[1\\]", "");
+					if (fullXPath.endsWith(xPath) || flooredFullXPath.endsWith(flooredXPath)) {
 						if(position == offset && result == null){ // keep first found
 							result = fn;
 						}
