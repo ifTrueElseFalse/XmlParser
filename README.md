@@ -6,7 +6,7 @@ create a new parser and load source.
 variable xml is a string with xml tags.
 
     XmlParser xp = new XmlParser();
-    xp.parseNode(xml)
+    xp.parseXml(xml)
 
 then one check nodes either by xpath
 

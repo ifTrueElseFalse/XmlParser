@@ -53,7 +53,7 @@ public class Testing {
 						+"</div>"
 					+ "</root>";
 		
-		testXp.parseNode(xml);
+		testXp.parseXml(xml);
 		
 		int xpath = 0;
 		int attributes = 0;

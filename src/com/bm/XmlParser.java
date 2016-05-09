@@ -24,7 +24,7 @@ public class XmlParser {
 	 * 
 	 * @param sml - xml string to be parsed
 	 */
-	public void parseNode(String xml) {
+	public void parseXml(String xml) {
 		if(!locked){
 			if (xml.indexOf("<?xml") == 0) {
 				// TODO add it to the tree instead of cutting it out, like a sibling to top
